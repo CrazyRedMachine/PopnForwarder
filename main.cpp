@@ -139,7 +139,7 @@ void process_pad(padstate_t* padstate){
 	padstate->usbPadRead(&pad_bits);
 	//if (usbSetExtIo != NULL) usbSetExtIo(0);
 
-	unsigned int buttonState;
+	unsigned int buttonState = 0;
     buttonState |= (pad_bits >> 8) & 0x1FF;
 	buttonState |= ((pad_bits >> 6)& 0x01) << 9;
 	buttonState |= ((pad_bits >> 7)& 0x01) << 10;
