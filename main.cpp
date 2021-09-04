@@ -1,7 +1,11 @@
-#define WINVER 0x0500
+// popnforwarder.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
 #include <windows.h>
 #include <fstream>
 #include <time.h>
+#include <cstdint>
 #define POLL_RATE 10
 //#define STATEDEBUG 1
 
@@ -12,29 +16,29 @@ typedef int (*padread)(unsigned long*);
 typedef int (*padreadlast)(unsigned char*);
 
 typedef struct padstate_s {
-	unsigned int button_state = 0;
+	unsigned int button_state;
 	padread usbPadRead;
 } padstate_t;
 
 typedef struct lampstate_s {
-	unsigned int prev_button_state = 0;
-	uint8_t neon_anim_index = 0;
-	uint8_t pillar_state_index = 0;
-	bool pillar_lit = false;
+	unsigned int prev_button_state;
+	uint8_t neon_anim_index;
+	uint8_t pillar_state_index;
+	bool pillar_lit;
 	LARGE_INTEGER frequency;
 	LARGE_INTEGER lastBlink;
 	LARGE_INTEGER lastNeonUpdate;
 	LARGE_INTEGER lastButtonAction;
-	unsigned long actionRate = 0;
-	unsigned long neonRate = 200;
-	uint32_t lamp_bitfield = 0;
+	LONGLONG actionRate;
+	double neonRate;
+	uint32_t lamp_bitfield;
 	start usbLamp;
 } lampstate_t;
 
 /*
 bit 1 (LSB) to bit 5 : neon
-bit 9       to bit 12: side lamps
-bit 24      to bit 32: button lamps
+bit 9       to bit 12: side lamps
+bit 24      to bit 32: button lamps
  * */
 uint32_t neon_anim[] = {16, 24, 28, 30, 31, 30, 28, 24};
 uint32_t pillar_state[] = {0, 0xA00, 0x500, 0xF00};
@@ -190,7 +194,7 @@ void process_pad(padstate_t* padstate){
 	padstate->button_state = buttonState;
 }
 
-int main(int argc, char* argv[])
+int _tmain(int argc, char* argv[])
 {
 /* LOAD REQUIRED MODULE */
 	start usbStart;
@@ -204,7 +208,7 @@ int main(int argc, char* argv[])
 
 	printf("Loading module ezusb.dll...\n");
 
-	HMODULE hinstLib = LoadLibrary("ezusb.dll");
+	HMODULE hinstLib = LoadLibrary(L"ezusb.dll");
  
 #ifdef STATEDEBUG
 	printf("ezusb.dll found at %x\n",hinstLib);
@@ -265,10 +269,18 @@ int main(int argc, char* argv[])
 	//init padState
 	srand(time(NULL));
 	padstate_t padState;
+	padState.button_state = 0;
 	padState.usbPadRead = usbPadRead;
 
 	//init lampState
 	lampstate_t lampState;
+	lampState.prev_button_state = 0;
+	lampState.neon_anim_index = 0;
+	lampState.pillar_state_index = 0;
+	lampState.pillar_lit = false;
+	lampState.actionRate = 0;
+	lampState.neonRate = 200;
+	lampState.lamp_bitfield = 0;
 	LARGE_INTEGER freq;
 	QueryPerformanceFrequency(&freq);
 	lampState.frequency = freq;
