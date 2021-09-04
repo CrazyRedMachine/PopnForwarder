@@ -9,7 +9,7 @@ This small tool allows the official IO Board to be used like a keyboard for emul
 
 ## How to use
 
-- Compile with XP compatibility using your favorite method (I personally tested this with CLion/MinGW).
+- Compile with XP compatibility using your favorite method (I recommend creating a new Win32 Console app project in Visual C++ 2010 Express then pasting this code).
 
 - Retrieve `ezusb.dll` and `libavs-win32.dll` from any Pop'n Music data folder and place it in the same folder as the forwarder
 
