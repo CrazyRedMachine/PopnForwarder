@@ -9,7 +9,7 @@ This small tool allows the official IO Board to be used like a keyboard for emul
 
 ## How to use
 
-- Compile with XP compatibility using your favorite method (I recommend creating a new Win32 Console app project in Visual C++ 2010 Express then pasting this code).
+- Download latest release from the "releases" page
 
 - Retrieve `ezusb.dll` and `libavs-win32.dll` from any Pop'n Music data folder and place it in the same folder as the forwarder
 
@@ -29,6 +29,9 @@ The top neons follow a fill-empty pattern whose speed is dynamically adjusted wi
 
 Simulated keypresses won't work if klock is active.
 
+## How to build
+
+- Compile with XP compatibility using your favorite method (I recommend creating a new Win32 Console app project in Visual C++ 2010 Express then pasting this code).
 
 ## Donation
 
